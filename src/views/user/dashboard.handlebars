@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/css/dashboard.css">
+<section class="screen-full">
+    <nav class="nav-bar">
+        <ul>
+            <li>HOME</li>
+            <li>AGENDA</li>
+            <li>PERFIL</li>
+            <li>Serviços</li>
+        </ul>
+    </nav>
+    <div class="viseble-section">
+        <h1>{{user}}</h1>
+        <div class="cards-menu-top">
+            <div class="card-menu">
+                hello
+            </div>
+            <div class="card-menu">
+                hello
+            </div>
+        </div>
+        <div class="cards-menu-down">
+            <div class="card-menu">
+                Sua Agenda Hoje
+            </div>
+            <div class="card-menu">
+                Agendamentos
+            </div>
+            <div class="card-menu">
+                <h3>Serviços</h3>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddService">
+                    Launch demo modal
+                </button>
+
+
+
+            </div>
+        </div>
+        <p class="copyright">powered by Matheus Souza</p>
+    </div>
+
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddService" tabindex="-1" aria-labelledby="modallAddservice" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Adicionar Serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <label for="title" class="form-label">Titulo</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" name="title" id="title-service">
+                    </div>
+                    <label for="price" class="form-label">Preço</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" name="price" id="price-service">
+                    </div>
+                    <label for="duration" class="form-label">Duração</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="hidden" name="duration" id="duration-service">
+                        <input class="form-control" type="Number" name="" id="Horas-i">
+                        <span class="ml-3">Horas</span>
+                        <input class="form-control" type="number" name="" id="Minutos-i">
+                        <span class="ml-3">Minutos</span>
+                    </div>
+                    <label for="description" class="form-label">Descrição</label>
+                    <div class="input-group mb-3">
+                        <textarea name="description" id="description-service" class="form-control" rows="5"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success" onclick="addService()">Adicionar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
+
+<script>
+    VMasker(document.querySelector("#price-service")).maskMoney({
+        // Decimal precision -> "90"
+        precision: 2,
+        // Decimal separator -> ",90"
+        separator: ',',
+        // Number delimiter -> "12.345.678"
+        delimiter: '.',
+        // Money unit -> "R$ 12.345.678,90"
+        unit: 'R$',
+        // Money unit -> "12.345.678,90 R$"
+    });
+</script>
+
+
+<script>
+    function addService() {
+        
+        const title = document.querySelector('#title-service').value;
+        const price = VMasker.toNumber(document.querySelector('#price-service').value) / 100;
+        const description = document.querySelector('#description-service').value;
+        const horaInpt = document.querySelector('#Horas-i').value;
+        const minutoInpt = document.querySelector('#Minutos-i').value;
+        const duration = (horaInpt * 3600000) + (minutoInpt * 60000);
+        const image = ''
+        axios.post(window.location.origin + '/register/service', { title, price, description, duration, image }).then((response) => {
+            console.log(response)
+        }).catch((err)=>{
+            console.log(err)
+        }
+
+        )
+    }
+
+
+</script>
