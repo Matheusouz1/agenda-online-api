@@ -50,7 +50,7 @@ routes.post('/register', UserController.store);
 //login
 routes.post('/login', UserController.login)
 //update user --> need auth
-routes.put('/update/:userLink', AuthMiddlewares,UserController.update);
+routes.put('/update/', AuthMiddlewares,UserController.update);
 //show all users
 routes.get('/companys/all', UserController.list);
 //show one user with link
@@ -76,10 +76,13 @@ routes.put('/update/service/:service_id', AuthMiddlewares,ServiceController.upda
 routes.get('/services/all', ServiceController.listAll)
 //show service for user
 routes.get('/:company_link/services', ServiceController.listCompany)
+routes.get('/myservices', AuthMiddlewares, ServiceController.myServices)
 //show one service with company and service id 
 routes.get('/:company_link/services/:service_id', ServiceController.listOne)
-//delete service
+//show one service with company and service id 
+routes.get('/services/list/:service_id',AuthMiddlewares, ServiceController.listOneId)
 routes.delete('/delete/service/:service_id', AuthMiddlewares,ServiceController.delete)
+//delete service
 
 
 /*

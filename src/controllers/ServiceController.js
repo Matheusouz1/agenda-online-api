@@ -4,8 +4,18 @@ const api = require('../services/api.js');
 
 class ServiceController {
 
+    async myServices(req, res){
+        const user_id = req.userId;
+        try{
+            const services = await Service.find({user:user_id})
+            return res.send(services)
+        }catch(err){
+            return res.status(400).send({error:"request failed "+err});
+        }
+        
+    }
+
     async store(req, res){
-        console.log(api.defaults.headers.authorization)
         const user_id = req.userId;
         const {title, description, price, duration, image} = req.body;
         const user = await User.findOne({ _id:user_id })
@@ -107,6 +117,19 @@ class ServiceController {
             }
 
             return res.send({service, user})
+        }catch(err){
+            return res.status(400).send({error:"registration failed: "+err});
+        }
+    }
+    async listOneId(req, res){
+        const {service_id} = req.params;
+        try{
+            const service = await Service.findOne({_id:service_id});
+            if(!service){
+                return res.status(404).send({ error: 'Service not found' });
+            }
+
+            return res.send({service})
         }catch(err){
             return res.status(400).send({error:"registration failed: "+err});
         }

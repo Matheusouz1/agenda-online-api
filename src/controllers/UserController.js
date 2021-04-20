@@ -49,6 +49,7 @@ class UserController {
         const {password, username} = req.body
         const user = await User.findOne({ username }).select('+password +username');
         if(!user){
+            console.log(res.status(404).send({error:"User not found"}))
             return res.status(404).send({error:"User not found"});
         }
 
@@ -65,16 +66,16 @@ class UserController {
 
     async update(req, res){
         try{
-            const link = req.params.userLink;
+            const userId = req.userId;
             const {password} = req.body; 
             if(password){
                 return res.status(404).send({error:"campo password não permitido nessa requisição"});
             }
-            const user = await User.findOne({company_link:link});
+            const user = await User.findOne({_id:userId});
             if(String(user._id)!==String(req.userId)){
                 return res.status(404).send({error:"permissão imválida! Token inválido"});
             }
-            await User.updateOne({company_link:link}, req.body);
+            await User.updateOne({_id:userId}, req.body);
             return res.send({ok:true})
         }catch(err){
             return res.status(400).send({error:"update failed"+err});
